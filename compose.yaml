@@ -1,0 +1,45 @@
+services:
+  abills:
+    container_name: abills-1.20.00
+    image: abills:1.20.00
+    environment:
+      DB_HOST: "percona57"
+      DB_PASSWORD: "abills2me"
+      SECRETKEY: "5944MDIIJ59XZO03BL5AFLI9"
+    volumes:
+      - type: bind
+        source: db-data\sql\abills.sql
+        target: /usr/abills/db/abills.sql
+    networks:
+      - devnet
+    ports:
+      - 9443:9443
+    links:
+      - "db:percona57"
+    depends_on:
+      - db
+  db:
+    container_name: percona57
+    image: percona:ps-5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root4me
+      MYSQL_USER: abills
+      MYSQL_PASSWORD: abills2me
+      MYSQL_DATABASE: abills
+    networks:
+      - devnet
+    ports:
+      - 3306:3306
+    volumes:
+      - type: bind
+        source: db-data\sql\abills.sql
+        target: /docker-entrypoint-initdb.d/abills.sql
+      # - type: bind
+      #   source: db-data\sql\abills_dump.sql
+      #   target: /docker-entrypoint-initdb.d/dump.sql
+networks:
+  devnet:
+    driver: bridge
+
+volumes:
+  db-data:
