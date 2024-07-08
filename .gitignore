@@ -1,5 +1,5 @@
-abills/archive/
-abills/config/
-abills/data/
-db-data/
+/abills/archive/
+/abills/config/
+/abills/data/
+/db-data/
 /text.txt
